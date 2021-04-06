@@ -1,0 +1,80 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package MidHW;
+
+/**
+ *
+ * @author 30187
+ */
+ 
+public class CVector {
+    public int Nums;
+    public double data[];
+
+    public CVector() {
+        this.Nums = 4;
+        double[] data = new double[Nums];
+    }
+
+    public CVector(int Nums) {
+        this.Nums = Nums;
+        this.data = new double[Nums];
+    }
+
+    public CVector(int Nums, double[] data) {
+        this.Nums = Nums;
+        this.data = new double[Nums];
+        this.setData(data);
+    }
+
+    public double[] getData() {
+        return data;
+    }
+
+    public void setData(double[] data) {
+        //要存储的数据长度不大于数组长度
+        if(data.length<=this.Nums)
+        {
+            for(int i=0;i<data.length;i++) this.data[i] = data[i];
+        }
+        //要存储的数据长度大于数组长度
+        else
+        {
+            for(int i=0;i<this.Nums;i++) this.data[i] = data[i];
+        }
+    }
+
+    public int getNums() {
+        return Nums;
+    }
+
+    public void setNums(int Nums) {
+        this.Nums = Nums;
+    }
+    
+    public void printVector(CVector vector)
+    {
+        for(int i=0;i<this.Nums;i++)
+        {
+            System.out.print(this.data[i]+"\t");
+        }
+        System.out.println();
+    }
+    
+    /* 向量的点积 实现方法 */
+    public double VectorDotProduct(CVector vector1,CVector vector2)
+    {
+        double result=0;
+        if(vector1.Nums == vector2.Nums)
+        {
+            for(int i=0;i<vector1.Nums;i++)
+            {
+                result += vector1.data[i] * vector2.data[i];
+            }
+        }
+        return result;
+    }
+}
