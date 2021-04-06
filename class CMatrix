@@ -1,0 +1,319 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package MidHW;
+
+/**
+ *
+ * @author 30187
+ */
+ 
+public class CMatrix {
+    private int nRows,nCols;
+    private double[] data;
+    
+    //构造一个不带属性的矩阵对象
+    public CMatrix() {
+        this.nRows=this.nCols=3;
+        this.data=new double[this.nRows*this.nCols];
+    }
+    //构造一个带行列属性的矩阵对象
+    public CMatrix(int nRows, int nCols) {
+        this.nRows = nRows;
+        this.nCols = nCols;
+        this.data=new double[this.nRows*this.nCols];
+    }
+    //构造一个带行列属性、数组数据的矩阵对象
+    public CMatrix(int nRows, int nCols, double[] data) {
+        this.nRows = nRows;
+        this.nCols = nCols;
+        this.data=new double[this.nRows*this.nCols];
+        this.setData(data);
+    }
+    
+    public double[] getData() {
+        return data;
+    }
+
+    public void setData(double[] data) {
+        int N=this.nRows*this.nCols;
+        //要存储的数据长度不大于数组长度
+        if(data.length<=N)
+        {
+            for(int i=0;i<data.length;i++) this.data[i] = data[i];
+        }
+        //要存储的数据长度大于数组长度
+        else
+        {
+            for(int i=0;i<N;i++) this.data[i] = data[i];
+        }
+    }
+
+    public int getnCols() {
+        return nCols;
+    }
+
+    public void setnCols(int nCols) {
+        this.nCols = nCols;
+    }
+
+    public int getnRows() {
+        return nRows;
+    }
+
+    public void setnRows(int nRows) {
+        this.nRows = nRows;
+    }
+
+    public void printMatrix()
+    {
+        int i,j;
+        for(i=0;i<this.nRows;i++)
+        {
+            for(j=0;j<this.nCols;j++)
+            {
+                System.out.print(this.data[i*this.nCols+j]+"\t");
+            }
+            System.out.println();
+        }
+    }
+    
+    /* 两矩阵相乘 实现方法 */
+    public CMatrix MatrixMultiply(CMatrix matrix1,CMatrix matrix2)
+    {
+        if(matrix1.nCols == matrix2.nRows)
+        {
+            int N=matrix1.nRows*matrix2.nCols;
+            double[] datax=new double[N];
+            int p=matrix1.nCols;
+            
+            for(int i=0;i<matrix1.nRows;i++)
+            {
+                for(int j=0;j<matrix2.nCols;j++)
+                {
+                    for(int k=0;k<p;k++)
+                    {
+                        datax[i*matrix2.nCols+j] += matrix1.data[i*matrix1.nCols+k] * matrix2.data[k*matrix2.nCols+j];
+                    }
+                }
+            }
+            CMatrix MtrixMultiplyResult = new CMatrix(matrix1.nRows,matrix2.nCols,datax);
+            return MtrixMultiplyResult;
+        }
+        else
+        {
+            double[] data = {0};
+            CMatrix ERROR = new CMatrix(1,1,data);
+            return ERROR;
+        }
+    }
+    
+    /* 矩阵与向量相乘 方法实现 */
+    public CVector MatrixMultipliedByVector(CMatrix matrix,CVector vector)
+    {
+        if(vector.Nums == matrix.nRows)
+        {
+            double[] datax = new double[matrix.nCols];
+            
+            for(int i=0;i<matrix.nCols;i++)
+            {
+                for(int j=0;j<vector.Nums;j++)
+                {
+                    datax[i] += vector.data[j] * matrix.data[j*matrix.nCols+i];
+                }
+            }
+            CVector vc = new CVector(matrix.nCols,datax);
+            return vc;
+        }
+        else
+        {
+            double[] data = {0};
+            CVector ERROR = new CVector(1,data);
+            return ERROR;
+        }
+    }
+    
+    /* 转置矩阵 实现方法 */
+    public CMatrix Transpose(CMatrix matrix)
+    {
+        if(this.nCols == this.nRows)
+        {
+            int n = this.nCols;
+            double[] datax = new double[n*n];
+            for(int i=0;i<n;i++)
+            {
+                for(int j=0;j<n;j++)
+                    datax[j*n+i] = data[i*n+j];
+            }
+            CMatrix mx = new CMatrix(n,n,datax);
+            return mx;
+        }
+        else 
+        {
+            double[] data = {0};
+            CMatrix mx = new CMatrix(1,1,data);
+            return mx;
+        }
+    }
+    
+    /* 两矩阵相加 实现方法 */
+    public void MatrixAddition(CMatrix matrix1,CMatrix matrix2)
+    {
+        if(matrix1.nRows == matrix2.nRows && matrix1.nCols == matrix2.nCols)
+        {
+            for(int i=0;i<matrix1.nRows;i++)
+            {
+                for(int j=0;j<matrix1.nCols;j++)
+                    matrix1.data[i*matrix1.nCols+j] += matrix2.data[i*matrix2.nCols+j];
+            }
+        }
+    }
+    
+    /* 两矩阵相减 实现方法 */
+    public void MatrixSubtraction(CMatrix matrix1,CMatrix matrix2)
+    {
+        if(matrix1.nRows == matrix2.nRows && matrix1.nCols == matrix2.nCols)
+        {
+            for(int i=0;i<matrix1.nRows;i++)
+            {
+                for(int j=0;j<matrix1.nCols;j++)
+                    matrix1.data[i*matrix1.nCols+j] -= matrix2.data[i*matrix2.nCols+j];
+            }
+        }
+    }
+    
+    /* 矩阵与标量相乘 实现方法 */
+    public void MatrixMultipliedByScale(CMatrix matrix,double scale)
+    {
+        for(int i=0;i<matrix.nRows;i++)
+        {
+            for(int j=0;j<matrix.nCols;j++)
+                matrix.data[i*matrix.nCols+j] *= scale;
+        }
+    }
+    
+    /************************** 两矩阵相除 方法实现 ***************************/
+    
+    //1.求划去(row,col)坐标的位置后的（n-1）阶矩阵
+    public CMatrix GetMinor(CMatrix matrix,int row,int col)
+    {
+        CMatrix Newmatrix = new CMatrix(matrix.nRows-1,matrix.nCols-1);//创建（n-1）阶矩阵
+        for(int i=0;i<Newmatrix.nRows;i++)
+        {
+            if(i<row)  //在目标行的上面
+            {
+                for(int j=0;j<Newmatrix.nCols;j++)
+                {
+                    if(j<col)   //在目标列的左边
+                    {
+                        Newmatrix.data[i*Newmatrix.nCols+j] = matrix.data[i*matrix.nCols+j];
+                    }
+                    else        //在目标列的右边
+                    {
+                        Newmatrix.data[i*Newmatrix.nCols+j] = matrix.data[i*matrix.nCols+(j+1)];
+                    }
+                }
+            }
+            else    //在目标行的下面
+            {
+                for(int j=0;j<Newmatrix.nCols;j++)
+                {
+                    if(j<col)   //在目标列的左边
+                    {
+                        Newmatrix.data[i*Newmatrix.nCols+j] = matrix.data[(i+1)*matrix.nCols+j];
+                    }
+                    else        //在目标列的右边
+                    {
+                        Newmatrix.data[i*Newmatrix.nCols+j] = matrix.data[(i+1)*matrix.nCols+(j+1)];
+                    }
+                }
+            }
+        }
+        //System.out.println("（n-1）阶矩阵为：");
+        //Newmatrix.printMatrix();
+        
+        return Newmatrix;
+    }
+    
+    //2.计算一个矩阵的n阶行列式（递归算法）
+    public double GetAlgebraicCofactor(CMatrix matrix)
+    {
+        int N = matrix.nRows;
+        double total=0; //存放该矩阵的行列式值
+        double[] num= new double[N]; //存放第一行所有元素的行列式
+
+        if(N==2)    //递归结束条件
+        {
+            total = matrix.data[0]*matrix.data[3]-matrix.data[1]*matrix.data[2];
+        }
+        else
+        {
+            for(int i=0;i<N;i++)  //循环计算第一行所有元素的行列式
+            {
+                if(i%2 == 0)   //（-1）的偶次方
+                {
+                    num[i] = matrix.data[i]*matrix.GetAlgebraicCofactor(GetMinor(matrix,0,i));
+                }
+                else   //（-1）的奇次方
+                {
+                    num[i] = - matrix.data[i]*matrix.GetAlgebraicCofactor(GetMinor(matrix,0,i));
+                }
+            }
+        
+            for(int j=0;j<N;j++)   //循环计算该矩阵的行列式
+            {
+                total += num[j];
+            }
+        }
+        //System.out.println("矩阵的行列式值为：");
+        //System.out.println(total);
+        
+        return total;    //返回该矩阵的行列式值
+    }
+    
+    //3.得到一个矩阵的逆矩阵
+    public CMatrix GetInverseMatrix(CMatrix matrix)
+    {
+        double total = GetAlgebraicCofactor(matrix);
+        CMatrix NewMatrix = new CMatrix(matrix.nRows,matrix.nCols);
+        
+        if(total != 0)
+        {
+            //循环计算matrix每个元素的代数余子式/该矩阵的行列式 即为该矩阵的逆矩阵各元素
+            for(int i=0;i<matrix.nRows;i++)
+            {
+                for(int j=0;j<matrix.nCols;j++)
+                {
+                    if((i+j)%2 == 0)    //（-1）的偶次方
+                    {
+                        NewMatrix.data[i*NewMatrix.nCols+j] = NewMatrix.GetAlgebraicCofactor( NewMatrix.GetMinor(matrix,i,j) ) / total;
+                    }
+                    else    //（-1）的奇次方
+                    {
+                        NewMatrix.data[i*NewMatrix.nCols+j] = - NewMatrix.GetAlgebraicCofactor( NewMatrix.GetMinor(matrix,i,j) ) / total;
+                    }
+                }
+            }
+            //System.out.println("矩阵的逆矩阵为：");
+            //NewMatrix.printMatrix();
+        }
+        else
+        {
+            System.out.println("行列式值为零，原矩阵的逆矩阵运算错误。");
+        }
+        return NewMatrix;
+    }
+    
+    //真正的两矩阵除法运算 方法实现
+    public CMatrix MatrixDivision(CMatrix matrix1,CMatrix matrix2)
+    {
+        CMatrix DivMatrix = new CMatrix(matrix1.nRows,matrix1.nCols);
+
+        DivMatrix = DivMatrix.MatrixMultiply(matrix2, GetInverseMatrix(matrix1));
+
+        return DivMatrix;
+    }
+    
+}
