@@ -55,7 +55,7 @@ public class CVector {
         this.Nums = Nums;
     }
     
-    public void printVector(CVector vector)
+    public void printVector()
     {
         for(int i=0;i<this.Nums;i++)
         {
