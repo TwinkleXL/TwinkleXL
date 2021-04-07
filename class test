@@ -1,0 +1,141 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package MidHW;
+
+/**
+ *
+ * @author 30187
+ */
+ 
+public class Test {
+    public static void main(String[] args)
+    {
+        /* 两矩阵相乘 测试代码 */
+        
+        double[] data1={0,1,2,3,4,5};
+        double[] data2={1,2,3,4,5,6,7,8,9};
+        CMatrix matrix1 = new CMatrix(2,3,data1);
+        System.out.println("矩阵一为：");
+        matrix1.printMatrix();
+        
+        CMatrix matrix2 = new CMatrix(3,3,data2);
+        System.out.println("矩阵二为：");
+        matrix2.printMatrix();
+        
+        System.out.println("矩阵一和矩阵二相乘后结果为：");
+        CMatrix mx = matrix1.MatrixMultiply(matrix1,matrix2);
+        mx.printMatrix();
+        
+        /*矩阵与向量相乘 测试代码*/
+        
+        double[] data3={0,1,2,3,4,5,6,7,8,9};
+        double[] data4={1,2};
+        CMatrix matrix = new CMatrix(2,5,data1);
+        System.out.println("矩阵为：");
+        matrix.printMatrix();
+        
+        CVector vector = new CVector(2,data2);
+        System.out.println("向量为：");
+        vector.printVector();
+        
+        System.out.println("矩阵和向量相乘后结果为：");
+        CVector vc = matrix.MatrixMultipliedByVector(matrix,vector);
+        vc.printVector();
+        
+        /*转置矩阵 测试代码*/
+        
+        double[] data = {1,2,3,4,5,6,7,8,9};
+        CMatrix matrix0 = new CMatrix(3,3,data);
+        System.out.println("转置前的矩阵为：");
+        matrix0.printMatrix();
+        CMatrix mx0 = matrix.Transpose(matrix);
+        System.out.println("转置矩阵为：");
+        mx0.printMatrix();
+        
+        
+        /*两向量点积 测试代码*/
+        
+        double[] data5 = {0,1,2,3,4,5,6};
+        double[] data6 = {1,2,3,4,5,6,7};
+        CVector vector1 = new CVector(7,data1);
+        CVector vector2 = new CVector(7,data2);
+        System.out.println("向量一为：");       
+        vector1.printVector();
+        System.out.println("向量二为：");
+        vector2.printVector();
+        double result = vector1.VectorDotProduct(vector1,vector2);
+        System.out.println("两向量的点积结果为："+result);
+        
+        
+        /*两矩阵的四则运算 测试代码*/
+        //加法运算
+        
+        double[] data7 = {0,1,2,3,4,5};
+        double[] data8 = {6,7,8,9,10,11};
+        CMatrix matrix3 = new CMatrix(2,3,data1);
+        System.out.println("作加法运算的矩阵一为：");
+        matrix3.printMatrix();
+        CMatrix matrix4 = new CMatrix(2,3,data2);
+        System.out.println("作加法运算的矩阵二为：");
+        matrix4.printMatrix();
+        matrix3.MatrixAddition(matrix1,matrix2);
+        System.out.println("加法运算后的矩阵为：");
+        matrix4.printMatrix();
+        
+        
+        //减法运算
+        
+        double[] data9 = {0,1,2,3,4,5};
+        double[] data10 = {6,7,8,9,10,11};
+        CMatrix matrix5 = new CMatrix(2,3,data1);
+        System.out.println("作减法运算的矩阵一为：");
+        matrix5.printMatrix();
+        CMatrix matrix6 = new CMatrix(2,3,data2);
+        System.out.println("作减法运算的矩阵二为：");
+        matrix6.printMatrix();
+        matrix5.MatrixSubtraction(matrix1,matrix2);
+        System.out.println("减法运算后的矩阵为：");
+        matrix6.printMatrix();
+        
+        
+        //矩阵与标量相乘
+        
+        double scale = 10;
+        double[] data11 = {0,1,2,3,4,5,6,7,8};
+        CMatrix matrix7 = new CMatrix(3,3,data);
+        System.out.println("原矩阵为");
+        matrix7.printMatrix();
+        System.out.println("标量为"+'\t'+scale);
+        matrix7.MatrixMultipliedByScale(matrix7,10);
+        System.out.println("矩阵与标量相乘后的结果为");
+        matrix7.printMatrix();
+        
+        
+        //两矩阵的除法
+        
+        //求划去(row,col)坐标的位置后的（n-1）阶矩阵 测试代码
+        double[] data12 = {1,2,2,2,3,3,4,5,6};
+        double[] data13 = {0,1,2,3,4,5,6,7,8};
+        CMatrix matrix8 = new CMatrix(3,3,data1);
+        CMatrix matrix9 = new CMatrix(3,3,data2);
+        System.out.println("A矩阵为：");
+        matrix8.printMatrix();
+        System.out.println("B矩阵为：");
+        matrix9.printMatrix();
+        
+        double total1 = matrix8.GetAlgebraicCofactor(matrix8);
+        System.out.println("A矩阵的行列式值为"+'\t'+total1);
+        
+        CMatrix matrix10 = matrix8.GetInverseMatrix(matrix8);
+        System.out.println("A的逆矩阵为：");
+        matrix10.printMatrix();
+        
+        matrix8 = matrix8.MatrixDivision(matrix8,matrix9);
+        System.out.println("A/B相除的结果为：");
+        matrix10.printMatrix();
+        
+    }
+}
